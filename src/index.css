@@ -1,0 +1,321 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cal Sans", sans-serif;
+}
+
+/* navbar */
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-bottom: 2px solid black;
+}
+
+/* welcome message*/
+.welcomeMessage {
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+/*mezura icon'ı*/
+.measureIcon {
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
+/* image and input rows */
+.imageRow,
+.infoRow {
+  display: flex;
+  gap: 20px;
+  margin: 20px 5px;
+}
+
+.fileInputGroup,
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+/* inputlar */
+.inputGroup input {
+  padding: 14px 12px;
+  height: 45px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  margin-top: 6px;
+}
+
+.inputGroup label {
+  font-size: 18px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+
+.customFileInput {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* preview images */
+.previewImage {
+  margin-top: 8px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.previewWrapper {
+  position: relative;
+  display: inline-block;
+}
+/*remove button*/
+.removeButton {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  background-color: transparent;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* button group */
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* buttons */
+.uploadButton,
+.showDataButton {
+  background-color: #eaeaea;
+  color: black;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.uploadButton:hover,
+.showDataButton:hover {
+  background-color: #dcdcdc;
+}
+
+/* measurements */
+.measurements-container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.measurement-item {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.measurement-item h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.measurement-item p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.measurement-item img {
+  display: block;
+  margin: 8px auto;
+  width: 60%;
+  max-width: 100px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* success message */
+.successMessage {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #758175;
+  color: rgb(0, 0, 0);
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeInOut 3s ease forwards;
+  letter-spacing: 0.5px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+/* error message*/
+.error {
+  color: #d32f2f;
+  background-color: #fddede;
+  border: 1px solid #f44336;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  max-width: 300px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* spinner loading*/
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+  height: 80px;
+}
+
+.spinner:after {
+  content: "";
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ccc;
+  border-top-color: #0c0f0c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .imageRow,
+  .infoRow,
+  .buttonGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .fileInputGroup,
+  .inputGroup {
+    width: 100%;
+  }
+
+  .previewImage {
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
+
+  .uploadButton,
+  .showDataButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .customFileInput {
+    justify-content: center;
+  }
+
+  .measurement-item img {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+/*no available measurements mesajı*/
+.noMes {
+  text-align: center;
+  margin: 40px auto;
+  font-size: 1.2rem;
+  color: #888;
+  background-color: #dfa3a3;
+  border: 1px dashed #ccc;
+  padding: 16px 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  animation: fadeIn 0.5s ease-in-out;
+}
