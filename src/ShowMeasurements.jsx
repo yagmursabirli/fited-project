@@ -3,15 +3,15 @@ import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import db from './firebase';
 
 function ShowMeasurements() {
-  const [measurements, setMeasurements] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [measurements, setMeasurements] = useState([]); //verileri tutar
+  const [loading, setLoading] = useState(false); //spinner
 
   useEffect(() => {
     const fetchMeasurements = async () => {
       setLoading(true);
-      const q = query(collection(db, 'measurements'), orderBy('timestamp', 'desc'));
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => doc.data());
+      const q = query(collection(db, 'measurements'), orderBy('timestamp', 'desc')); //firebaseden veriyi çeker
+      const snapshot = await getDocs(q); // await ile bekle
+      const data = snapshot.docs.map(doc => doc.data());//kullanabilmek için
       setMeasurements(data);
       setLoading(false);
     };

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { IoMdCloudUpload } from "react-icons/io";
-import { MdAddPhotoAlternate } from "react-icons/md";
-import { FaTrashAlt } from "react-icons/fa";
-import { IoMdCheckmarkCircle } from "react-icons/io";
-import { estimateMeasurements } from "./poseUtils";
+import { IoMdCloudUpload } from "react-icons/io"; //upload part
+import { MdAddPhotoAlternate } from "react-icons/md"; //photo upload part
+import { FaTrashAlt } from "react-icons/fa";// trash bin
+import { IoMdCheckmarkCircle } from "react-icons/io"; //for success message
+import { estimateMeasurements } from "./poseUtils"; //js  estMes function
 import db from "./firebase";
 import { collection, addDoc } from "firebase/firestore";
 import tapeMeasureImage from './icons/tape-measure.png'; // mezura görseli
@@ -17,17 +17,48 @@ function UploadForm({ onShowMeasurements }) {
   const [weight, setWeight] = useState("");
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  const [latestMeasurement, setLatestMeasurement] = useState(null);
+  const [warning, setWarning] = useState("");
+  const [latestMeasurement, setLatestMeasurement] = useState(null); // son ölçüm
+
+  
 
   //base64e çevirme
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file); //filereader api base64 yapar
+      reader.onload = () => resolve(reader.result); 
+      reader.onerror = (error) => reject(error); 
     });
   };
+
+  const resizeImageBase64 = (base64Str, maxWidth = 400, maxHeight = 400) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let { width, height } = img;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL()); // küçültülmüş base64
+    };
+  });
+};
 
   //image yüklenince error mesajı yok olur
   const handleImageChange = (e, setImage, fieldName) => {
@@ -58,27 +89,34 @@ function UploadForm({ onShowMeasurements }) {
     if (!validateFields()) return;
 
     try {
-      const frontBase64 = await convertToBase64(front);
+      const frontBase64 = await convertToBase64(front);//processin tamamlanmasını beklemek için await
       const backBase64 = await convertToBase64(back);
       const leftBase64 = await convertToBase64(left);
       const rightBase64 = await convertToBase64(right);
 
-      const measurements = await estimateMeasurements(frontBase64, Number(height));
+      const resizedFront = await resizeImageBase64(frontBase64);
+const resizedBack = await resizeImageBase64(backBase64);
+const resizedLeft = await resizeImageBase64(leftBase64);
+const resizedRight = await resizeImageBase64(rightBase64);
+
+      const measurements = await estimateMeasurements(resizedFront, Number(height)); 
       if (!measurements) {
-        alert("please upload more clear image");
+        setWarning("Couldn’t process the image. Please upload a clearer photo with full visibility.")
+        setTimeout(() => setWarning(""), 4000);
         return;
       }
     // firabase e ekler
-      await addDoc(collection(db, "measurements"), {
-        frontImage: frontBase64,
-        backImage: backBase64,
-        leftImage: leftBase64,
-        rightImage: rightBase64,
-        height: height,
-        weight: weight,
-        ...measurements,
-        timestamp: new Date()
-      });
+     await addDoc(collection(db, "measurements"), {
+  frontImage: resizedFront,
+  backImage: resizedBack,
+  leftImage: resizedLeft,
+  rightImage: resizedRight,
+  height,
+  weight,
+  ...measurements,
+  timestamp: new Date()
+});
+
        //sonuncu
       setLatestMeasurement({
         frontImage: frontBase64,
@@ -92,7 +130,7 @@ function UploadForm({ onShowMeasurements }) {
       // success message
       setSuccessMessage("Upload and Measurement Successful!");
       setTimeout(() => setSuccessMessage(""), 4000);
-
+      //formu sıfırlar
       setFront(null);
       setBack(null);
       setLeft(null);
@@ -122,6 +160,13 @@ function UploadForm({ onShowMeasurements }) {
         </div>
       )}
 
+      
+{warning && (
+        <div className="warningMessage">
+          {warning}
+        </div>
+      )}
+
       <div className="uploadForm">
         {/* image upload part*/}
         <div className="imageRow">
@@ -131,6 +176,7 @@ function UploadForm({ onShowMeasurements }) {
               Front Image
               <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, setFront, "front")} style={{ display: "none" }} />
             </label>
+            {/*yüklenmiş hali göstermek için */}
             {front && (
               <div className="previewWrapper">
                 <img src={URL.createObjectURL(front)} alt="Front Preview" className="previewImage" />

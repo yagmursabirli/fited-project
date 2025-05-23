@@ -50,7 +50,7 @@
   margin-top: 10px;
 }
 
-/* inputlar */
+/* input ktutları*/
 .inputGroup input {
   padding: 14px 12px;
   height: 45px;
@@ -161,7 +161,7 @@
   width: 100%;
   margin-bottom: 20px;
 }
-
+/*ölçümlerin gösterildiği kısım*/
 .measurement-item h3 {
   font-size: 1.2rem;
   color: #333;
@@ -198,7 +198,7 @@
   animation: fadeInOut 3s ease forwards;
   letter-spacing: 0.5px;
 }
-
+/* animation success message gelir gider*/
 @keyframes fadeInOut {
   0% {
     opacity: 0;
@@ -270,7 +270,7 @@ img {
     transform: rotate(360deg);
   }
 }
-
+/*responsive*/
 @media (max-width: 768px) {
   .imageRow,
   .infoRow,
@@ -318,4 +318,27 @@ img {
   border-radius: 12px;
   max-width: 400px;
   animation: fadeIn 0.5s ease-in-out;
+}
+
+.warningMessage{
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e86a61;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeInOut 3s ease forwards;
+}
+.landmark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
 }
